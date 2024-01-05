@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### ENVs ###
-*/applicatio.yml
+*/application.yml
