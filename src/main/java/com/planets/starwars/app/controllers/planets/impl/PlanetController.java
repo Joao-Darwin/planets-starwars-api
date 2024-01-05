@@ -5,6 +5,7 @@ import com.planets.starwars.app.dto.v1.PlanetRequestDTO;
 import com.planets.starwars.app.dto.v1.PlanetResponseDTO;
 import com.planets.starwars.app.services.PlanetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,8 @@ public class PlanetController implements IPlanetController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PlanetResponseDTO> create(@RequestBody PlanetRequestDTO planet) {
-        return null;
+        PlanetResponseDTO planetResponseDTO = planetService.create(planet);
+        return ResponseEntity.status(HttpStatus.CREATED).body(planetResponseDTO);
     }
 
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
