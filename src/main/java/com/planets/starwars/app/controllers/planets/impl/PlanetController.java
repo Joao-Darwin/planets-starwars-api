@@ -49,7 +49,7 @@ public class PlanetController implements IPlanetController {
         return null;
     }
 
-    @DeleteMapping
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable(value = "id") String id) {
         return null;
     }
