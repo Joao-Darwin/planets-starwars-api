@@ -4,8 +4,8 @@ import com.planets.starwars.app.dto.v1.PlanetRequestDTO;
 import com.planets.starwars.app.dto.v1.PlanetResponseDTO;
 import com.planets.starwars.app.models.Planet;
 import com.planets.starwars.app.repositories.PlanetRepository;
-import com.planets.starwars.app.utils.ConvertPlanetEntityToPlanetResponseDTO;
-import com.planets.starwars.app.utils.ConvertPlanetRequestDTOToPlanetEntity;
+import com.planets.starwars.app.utils.conversions.ConvertPlanetEntityToPlanetResponseDTO;
+import com.planets.starwars.app.utils.conversions.ConvertPlanetRequestDTOToPlanetEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.planets.starwars.app.utils;
+package com.planets.starwars.app.utils.conversions;
 
 import com.planets.starwars.app.dto.v1.PlanetRequestDTO;
 import com.planets.starwars.app.models.Planet;
