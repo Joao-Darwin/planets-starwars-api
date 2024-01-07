@@ -2,12 +2,16 @@ package com.planets.starwars.app.services;
 
 import com.planets.starwars.app.dto.v1.PlanetRequestDTO;
 import com.planets.starwars.app.dto.v1.PlanetResponseDTO;
+import com.planets.starwars.app.exceptions.PlanetNotFindException;
 import com.planets.starwars.app.models.Planet;
 import com.planets.starwars.app.repositories.PlanetRepository;
 import com.planets.starwars.app.utils.conversions.ConvertPlanetEntityToPlanetResponseDTO;
 import com.planets.starwars.app.utils.conversions.ConvertPlanetRequestDTOToPlanetEntity;
+import com.planets.starwars.app.utils.requests.RequestToStarWarsOficialAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 public class PlanetService {
@@ -19,11 +23,10 @@ public class PlanetService {
         this.planetRepository = planetRepository;
     }
 
-    public PlanetResponseDTO create(PlanetRequestDTO planet) {
+    public PlanetResponseDTO create(PlanetRequestDTO planet) throws IOException, InterruptedException, PlanetNotFindException {
         Planet planetEntity = ConvertPlanetRequestDTOToPlanetEntity.convertPlanetRequestDTOToPlanetEntity(planet);
-        planetEntity.setFilmAppearances(7);
-
-        // TODO: 05/01/2024 - Aqui iria a solicitação para a API oficial buscando a quantidade de aparições. Caso não exixtisse retonava e não salvava no banco
+        int filmAppearances = RequestToStarWarsOficialAPI.GetPlanetFilmAppearances(planet.getName());
+        planetEntity.setFilmAppearances(filmAppearances);
 
         planetEntity = planetRepository.save(planetEntity);
 
