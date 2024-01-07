@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -25,8 +26,12 @@ public class PlanetController implements IPlanetController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PlanetResponseDTO> create(@RequestBody PlanetRequestDTO planet) {
-        PlanetResponseDTO planetResponseDTO = planetService.create(planet);
-        return ResponseEntity.status(HttpStatus.CREATED).body(planetResponseDTO);
+        try {
+            PlanetResponseDTO planetResponseDTO = planetService.create(planet);
+            return ResponseEntity.status(HttpStatus.CREATED).body(planetResponseDTO);
+        } catch (IOException | InterruptedException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
