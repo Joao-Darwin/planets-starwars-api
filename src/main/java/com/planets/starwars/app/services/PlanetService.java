@@ -4,6 +4,8 @@ import com.planets.starwars.app.dto.v1.PlanetRequestDTO;
 import com.planets.starwars.app.dto.v1.PlanetResponseDTO;
 import com.planets.starwars.app.models.Planet;
 import com.planets.starwars.app.repositories.PlanetRepository;
+import com.planets.starwars.app.utils.ConvertPlanetEntityToPlanetResponseDTO;
+import com.planets.starwars.app.utils.ConvertPlanetRequestDTOToPlanetEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,25 +20,13 @@ public class PlanetService {
     }
 
     public PlanetResponseDTO create(PlanetRequestDTO planet) {
-        Planet planetEntity = new Planet();
-
-        planetEntity.setName(planet.getName());
-        planetEntity.setClimate(planet.getClimate());
-        planetEntity.setGround(planet.getGround());
+        Planet planetEntity = ConvertPlanetRequestDTOToPlanetEntity.convertPlanetRequestDTOToPlanetEntity(planet);
         planetEntity.setFilmAppearances(7);
 
         // TODO: 05/01/2024 - Aqui iria a solicitação para a API oficial buscando a quantidade de aparições. Caso não exixtisse retonava e não salvava no banco
 
         planetEntity = planetRepository.save(planetEntity);
 
-        PlanetResponseDTO planetResponseDTO = new PlanetResponseDTO();
-
-        planetResponseDTO.setId(planetEntity.getId());
-        planetResponseDTO.setName(planetEntity.getName());
-        planetResponseDTO.setClimate(planetEntity.getClimate());
-        planetResponseDTO.setGround(planetEntity.getGround());
-        planetResponseDTO.setFilmAppearances(planetEntity.getFilmAppearances());
-
-        return planetResponseDTO;
+        return ConvertPlanetEntityToPlanetResponseDTO.convertPlanetEntityToPlanetResponseDTO(planetEntity);
     }
 }
