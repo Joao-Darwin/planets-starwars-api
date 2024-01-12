@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class PlanetService {
@@ -31,5 +32,11 @@ public class PlanetService {
         planetEntity = planetRepository.save(planetEntity);
 
         return ConvertPlanetEntityToPlanetResponseDTO.convertPlanetEntityToPlanetResponseDTO(planetEntity);
+    }
+
+    public List<PlanetResponseDTO> findAll() {
+        List<Planet> planets = planetRepository.findAll();
+
+        return ConvertPlanetEntityToPlanetResponseDTO.convertListPlanetEntityToListPlanerResponseDTO(planets);
     }
 }
