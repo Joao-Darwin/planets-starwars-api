@@ -46,6 +46,12 @@ public class PlanetService {
         return ConvertPlanetEntityToPlanetResponseDTO.convertPlanetEntityToPlanetResponseDTO(planet);
     }
 
+    public PlanetResponseDTO findById(String id) {
+        Planet planet = planetRepository.findById(id).orElseThrow(() -> new PlanetNotFindException("Planet don't find."));
+
+        return ConvertPlanetEntityToPlanetResponseDTO.convertPlanetEntityToPlanetResponseDTO(planet);
+    }
+
     public void delete(String id) {
         planetRepository.deleteById(id);
     }
