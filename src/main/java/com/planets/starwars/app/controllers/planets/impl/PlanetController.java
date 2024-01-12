@@ -58,6 +58,7 @@ public class PlanetController implements IPlanetController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable(value = "id") String id) {
-        return null;
+        planetService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

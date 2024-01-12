@@ -39,4 +39,8 @@ public class PlanetService {
 
         return ConvertPlanetEntityToPlanetResponseDTO.convertListPlanetEntityToListPlanerResponseDTO(planets);
     }
+
+    public void delete(String id) {
+        planetRepository.deleteById(id);
+    }
 }
