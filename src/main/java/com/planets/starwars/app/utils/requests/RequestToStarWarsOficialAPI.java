@@ -11,7 +11,8 @@ public class RequestToStarWarsOficialAPI {
     public static int GetPlanetFilmAppearances(String namePlanet) throws PlanetNotFindException {
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<PlanetDataAPIOfficialResponse> planetData = restTemplate.getForEntity(baseUrl + "planets/?search=" + namePlanet, PlanetDataAPIOfficialResponse.class);
+        String url = baseUrl + "planets/?search=" + namePlanet;
+        ResponseEntity<PlanetDataAPIOfficialResponse> planetData = restTemplate.getForEntity(url, PlanetDataAPIOfficialResponse.class);
 
         PlanetDataAPIOfficialResponse planetDataDTO = planetData.getBody();
 
