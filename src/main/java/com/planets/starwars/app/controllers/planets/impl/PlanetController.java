@@ -34,9 +34,11 @@ public class PlanetController implements IPlanetController {
         }
     }
 
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     public ResponseEntity<List<PlanetResponseDTO>> findAll() {
-        return null;
+        List<PlanetResponseDTO> planetResponseDTOList = planetService.findAll();
+
+        return ResponseEntity.status(200).body(planetResponseDTOList);
     }
 
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
