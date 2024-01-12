@@ -41,9 +41,11 @@ public class PlanetController implements IPlanetController {
         return ResponseEntity.status(200).body(planetResponseDTOList);
     }
 
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/search")
     public ResponseEntity<PlanetResponseDTO> findByName(@RequestParam(value = "name") String namePlanet) {
-        return null;
+        PlanetResponseDTO planetResponseDTO = planetService.findByName(namePlanet);
+
+        return ResponseEntity.status(HttpStatus.OK).body(planetResponseDTO);
     }
 
     @GetMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)

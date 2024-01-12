@@ -40,6 +40,12 @@ public class PlanetService {
         return ConvertPlanetEntityToPlanetResponseDTO.convertListPlanetEntityToListPlanerResponseDTO(planets);
     }
 
+    public PlanetResponseDTO findByName(String name) {
+        Planet planet = planetRepository.findByName(name);
+
+        return ConvertPlanetEntityToPlanetResponseDTO.convertPlanetEntityToPlanetResponseDTO(planet);
+    }
+
     public void delete(String id) {
         planetRepository.deleteById(id);
     }
