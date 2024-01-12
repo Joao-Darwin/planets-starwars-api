@@ -52,6 +52,19 @@ public class PlanetService {
         return ConvertPlanetEntityToPlanetResponseDTO.convertPlanetEntityToPlanetResponseDTO(planet);
     }
 
+    public PlanetResponseDTO update(String id, PlanetRequestDTO planetRequestDTO) {
+        Planet planet = planetRepository.findById(id).orElseThrow(() -> new PlanetNotFindException("Planet don't find."));
+
+        int filmAppearances = RequestToStarWarsOficialAPI.GetPlanetFilmAppearances(planetRequestDTO.getName());
+
+        planet.setName(planetRequestDTO.getName());
+        planet.setGround(planetRequestDTO.getGround());
+        planet.setClimate(planetRequestDTO.getClimate());
+        planet.setFilmAppearances(filmAppearances);
+
+        return ConvertPlanetEntityToPlanetResponseDTO.convertPlanetEntityToPlanetResponseDTO(planetRepository.save(planet));
+    }
+
     public void delete(String id) {
         planetRepository.deleteById(id);
     }

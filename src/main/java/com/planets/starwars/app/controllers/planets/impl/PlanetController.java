@@ -57,7 +57,9 @@ public class PlanetController implements IPlanetController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PlanetResponseDTO> update(@PathVariable(value = "id") String id, @RequestBody PlanetRequestDTO planet) {
-        return null;
+        PlanetResponseDTO planetResponseDTO = planetService.update(id, planet);
+
+        return ResponseEntity.status(HttpStatus.OK).body(planetResponseDTO);
     }
 
     @DeleteMapping(value = "/{id}")
