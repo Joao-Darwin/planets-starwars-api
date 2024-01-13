@@ -43,6 +43,10 @@ public class PlanetService {
     public PlanetResponseDTO findByName(String name) {
         Planet planet = planetRepository.findByName(name);
 
+        if (planet == null) {
+            throw new PlanetNotFindException("Planet don't find.");
+        }
+
         return ConvertPlanetEntityToPlanetResponseDTO.convertPlanetEntityToPlanetResponseDTO(planet);
     }
 
