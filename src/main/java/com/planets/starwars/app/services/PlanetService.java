@@ -17,6 +17,7 @@ import java.util.List;
 @Service
 public class PlanetService {
 
+    private static final String PLANET_NOT_FIND_MESSAGE = "Planet don't find";
     private final PlanetRepository planetRepository;
 
     @Autowired
@@ -44,20 +45,20 @@ public class PlanetService {
         Planet planet = planetRepository.findByName(name);
 
         if (planet == null) {
-            throw new PlanetNotFindException("Planet don't find.");
+            throw new PlanetNotFindException(PLANET_NOT_FIND_MESSAGE);
         }
 
         return ConvertPlanetEntityToPlanetResponseDTO.convertPlanetEntityToPlanetResponseDTO(planet);
     }
 
     public PlanetResponseDTO findById(String id) {
-        Planet planet = planetRepository.findById(id).orElseThrow(() -> new PlanetNotFindException("Planet don't find."));
+        Planet planet = planetRepository.findById(id).orElseThrow(() -> new PlanetNotFindException(PLANET_NOT_FIND_MESSAGE));
 
         return ConvertPlanetEntityToPlanetResponseDTO.convertPlanetEntityToPlanetResponseDTO(planet);
     }
 
     public PlanetResponseDTO update(String id, PlanetRequestDTO planetRequestDTO) {
-        Planet planet = planetRepository.findById(id).orElseThrow(() -> new PlanetNotFindException("Planet don't find."));
+        Planet planet = planetRepository.findById(id).orElseThrow(() -> new PlanetNotFindException(PLANET_NOT_FIND_MESSAGE));
 
         int filmAppearances = RequestToStarWarsOficialAPI.GetPlanetFilmAppearances(planetRequestDTO.getName());
 
