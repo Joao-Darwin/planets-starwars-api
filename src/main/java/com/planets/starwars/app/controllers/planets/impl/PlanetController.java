@@ -24,7 +24,9 @@ public class PlanetController implements IPlanetController {
         this.planetService = planetService;
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<PlanetResponseDTO> create(@RequestBody PlanetRequestDTO planet) {
         try {
             PlanetResponseDTO planetResponseDTO = planetService.create(planet);
@@ -34,28 +36,34 @@ public class PlanetController implements IPlanetController {
         }
     }
 
-    @GetMapping
+    @GetMapping(
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<List<PlanetResponseDTO>> findAll() {
         List<PlanetResponseDTO> planetResponseDTOList = planetService.findAll();
 
         return ResponseEntity.status(200).body(planetResponseDTOList);
     }
 
-    @GetMapping("/search")
+    @GetMapping(value = "/search",
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<PlanetResponseDTO> findByName(@RequestParam(value = "name") String namePlanet) {
         PlanetResponseDTO planetResponseDTO = planetService.findByName(namePlanet);
 
         return ResponseEntity.status(HttpStatus.OK).body(planetResponseDTO);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<PlanetResponseDTO> findById(@PathVariable(value = "id") String id) {
         PlanetResponseDTO planetResponseDTO = planetService.findById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(planetResponseDTO);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<PlanetResponseDTO> update(@PathVariable(value = "id") String id, @RequestBody PlanetRequestDTO planet) {
         PlanetResponseDTO planetResponseDTO = planetService.update(id, planet);
 
