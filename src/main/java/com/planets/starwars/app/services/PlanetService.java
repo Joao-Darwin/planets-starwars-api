@@ -75,6 +75,12 @@ public class PlanetService {
         planet.setClimate(planetRequestDTO.getClimate());
         planet.setFilmAppearances(filmAppearances);
 
+        Planet planetExist = planetRepository.findByName(planet.getName());
+
+        if (!(planetExist == null)) {
+            throw new PlanetAlreadyExistsException(PLANET_ALREADY_EXISTS_MESSAGE);
+        }
+
         return ConvertPlanetEntityToPlanetResponseDTO.convertPlanetEntityToPlanetResponseDTO(planetRepository.save(planet));
     }
 
