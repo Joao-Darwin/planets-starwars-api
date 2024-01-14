@@ -2,6 +2,7 @@ package com.planets.starwars.app.services;
 
 import com.planets.starwars.app.dto.v1.PlanetRequestDTO;
 import com.planets.starwars.app.dto.v1.PlanetResponseDTO;
+import com.planets.starwars.app.exceptions.PlanetAlreadyExistsException;
 import com.planets.starwars.app.exceptions.PlanetNotFindException;
 import com.planets.starwars.app.models.Planet;
 import com.planets.starwars.app.repositories.PlanetRepository;
@@ -18,6 +19,7 @@ import java.util.List;
 public class PlanetService {
 
     private static final String PLANET_NOT_FIND_MESSAGE = "Planet don't find";
+    private static final String PLANET_ALREADY_EXISTS_MESSAGE = "Planet already exists";
     private final PlanetRepository planetRepository;
 
     @Autowired
@@ -26,6 +28,12 @@ public class PlanetService {
     }
 
     public PlanetResponseDTO create(PlanetRequestDTO planet) throws IOException, InterruptedException, PlanetNotFindException {
+        Planet planetExist = planetRepository.findByName(planet.getName());
+
+        if (!(planetExist == null)) {
+            throw new PlanetAlreadyExistsException(PLANET_ALREADY_EXISTS_MESSAGE);
+        }
+
         Planet planetEntity = ConvertPlanetRequestDTOToPlanetEntity.convertPlanetRequestDTOToPlanetEntity(planet);
         int filmAppearances = RequestToStarWarsOficialAPI.GetPlanetFilmAppearances(planet.getName());
         planetEntity.setFilmAppearances(filmAppearances);
