@@ -1,5 +1,6 @@
 package com.planets.starwars.app.exceptions.handler;
 
+import com.planets.starwars.app.exceptions.PlanetAlreadyExistsException;
 import com.planets.starwars.app.exceptions.PlanetNotFindException;
 import com.planets.starwars.app.exceptions.ResponseEntityException;
 import org.springframework.http.HttpStatus;
@@ -28,5 +29,12 @@ public class CustomizeExceptionHandler extends ResponseEntityExceptionHandler {
         ResponseEntityException responseEntityException = new ResponseEntityException(Instant.now(), exception.getMessage(), webRequest.getDescription(false));
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseEntityException);
+    }
+
+    @ExceptionHandler(PlanetAlreadyExistsException.class)
+    public final ResponseEntity<ResponseEntityException> handlePlanetAlreadyExists(Exception exception, WebRequest webRequest) {
+        ResponseEntityException responseEntityException = new ResponseEntityException(Instant.now(), exception.getMessage(), webRequest.getDescription(false));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseEntityException);
     }
 }
