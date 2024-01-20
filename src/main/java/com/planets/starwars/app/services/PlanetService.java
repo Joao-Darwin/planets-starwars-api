@@ -44,7 +44,12 @@ public class PlanetService {
 
         planetEntity = planetRepository.save(planetEntity);
 
-        return ConvertPlanetEntityToPlanetResponseDTO.convertPlanetEntityToPlanetResponseDTO(planetEntity);
+        PlanetResponseDTO planetResponseDTO = ConvertPlanetEntityToPlanetResponseDTO.convertPlanetEntityToPlanetResponseDTO(planetEntity);
+        planetResponseDTO.add(
+                linkTo(methodOn(PlanetController.class).findById(planetResponseDTO.getId())).withSelfRel().withTitle("FindById"),
+                linkTo(methodOn(PlanetController.class).findByName(planetResponseDTO.getName())).withSelfRel().withTitle("FindByName"));
+
+        return planetResponseDTO;
     }
 
     public List<PlanetResponseDTO> findAll() {
