@@ -1,9 +1,11 @@
 package com.planets.starwars.app.dto.v1;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import java.io.Serial;
 import java.io.Serializable;
 
-public class PlanetResponseDTO implements Serializable {
+public class PlanetResponseDTO extends RepresentationModel<PlanetResponseDTO> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
