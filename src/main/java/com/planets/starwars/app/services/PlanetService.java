@@ -56,11 +56,10 @@ public class PlanetService {
         List<Planet> planets = planetRepository.findAll();
 
         List<PlanetResponseDTO> planetResponseDTOList = ConvertPlanetEntityToPlanetResponseDTO.convertListPlanetEntityToListPlanerResponseDTO(planets);
-        planetResponseDTOList.forEach(planetResponseDTO -> {
-            planetResponseDTO.add(
-                    linkTo(methodOn(PlanetController.class).findById(planetResponseDTO.getId())).withSelfRel().withTitle("FindById"),
-                    linkTo(methodOn(PlanetController.class).findByName(planetResponseDTO.getName())).withSelfRel().withTitle("FindByName"));
-        });
+        planetResponseDTOList.forEach(planetResponseDTO -> planetResponseDTO.add(
+                linkTo(methodOn(PlanetController.class).findById(planetResponseDTO.getId())).withSelfRel().withTitle("FindById"),
+                linkTo(methodOn(PlanetController.class).findByName(planetResponseDTO.getName())).withSelfRel().withTitle("FindByName"))
+        );
 
         return planetResponseDTOList;
     }
