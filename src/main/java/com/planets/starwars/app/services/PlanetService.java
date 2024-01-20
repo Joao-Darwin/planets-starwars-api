@@ -1,5 +1,6 @@
 package com.planets.starwars.app.services;
 
+import com.planets.starwars.app.controllers.planets.impl.PlanetController;
 import com.planets.starwars.app.dto.v1.PlanetRequestDTO;
 import com.planets.starwars.app.dto.v1.PlanetResponseDTO;
 import com.planets.starwars.app.exceptions.PlanetAlreadyExistsException;
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class PlanetService {
@@ -46,7 +50,14 @@ public class PlanetService {
     public List<PlanetResponseDTO> findAll() {
         List<Planet> planets = planetRepository.findAll();
 
-        return ConvertPlanetEntityToPlanetResponseDTO.convertListPlanetEntityToListPlanerResponseDTO(planets);
+        List<PlanetResponseDTO> planetResponseDTOList = ConvertPlanetEntityToPlanetResponseDTO.convertListPlanetEntityToListPlanerResponseDTO(planets);
+        planetResponseDTOList.forEach(planetResponseDTO -> {
+            planetResponseDTO.add(
+                    linkTo(methodOn(PlanetController.class).findById(planetResponseDTO.getId())).withSelfRel().withTitle("FindById"),
+                    linkTo(methodOn(PlanetController.class).findByName(planetResponseDTO.getName())).withSelfRel().withTitle("FindByName"));
+        });
+
+        return planetResponseDTOList;
     }
 
     public PlanetResponseDTO findByName(String name) {
