@@ -45,8 +45,7 @@ public class PlanetController implements IPlanetController {
     }
 
     @GetMapping(value = "/search",
-            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<PlanetResponseDTO> findByName(@RequestParam(value = "name") String namePlanet) {
         PlanetResponseDTO planetResponseDTO = planetService.findByName(namePlanet);
 
