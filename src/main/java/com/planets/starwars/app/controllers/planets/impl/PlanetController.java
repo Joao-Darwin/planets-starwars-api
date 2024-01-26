@@ -1,6 +1,7 @@
 package com.planets.starwars.app.controllers.planets.impl;
 
 import com.planets.starwars.app.controllers.planets.IPlanetController;
+import com.planets.starwars.app.dto.v1.OnlyIdAndLinksPlanetResponseDTO;
 import com.planets.starwars.app.dto.v1.PlanetRequestDTO;
 import com.planets.starwars.app.dto.v1.PlanetResponseDTO;
 import com.planets.starwars.app.services.PlanetService;
@@ -38,8 +39,8 @@ public class PlanetController implements IPlanetController {
 
     @GetMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<List<PlanetResponseDTO>> findAll() {
-        List<PlanetResponseDTO> planetResponseDTOList = planetService.findAll();
+    public ResponseEntity<List<OnlyIdAndLinksPlanetResponseDTO>> findAll() {
+        List<OnlyIdAndLinksPlanetResponseDTO> planetResponseDTOList = planetService.findAll();
 
         return ResponseEntity.status(200).body(planetResponseDTOList);
     }

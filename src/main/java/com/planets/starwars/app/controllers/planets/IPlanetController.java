@@ -1,5 +1,6 @@
 package com.planets.starwars.app.controllers.planets;
 
+import com.planets.starwars.app.dto.v1.OnlyIdAndLinksPlanetResponseDTO;
 import com.planets.starwars.app.dto.v1.PlanetRequestDTO;
 import com.planets.starwars.app.dto.v1.PlanetResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,14 +34,14 @@ public interface IPlanetController {
             tags = {"Planets"},
             responses = {
                     @ApiResponse(description = "Success", responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = PlanetResponseDTO.class))
+                            content = @Content(schema = @Schema(implementation = OnlyIdAndLinksPlanetResponseDTO.class))
                     ),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
             }
     )
-    ResponseEntity<List<PlanetResponseDTO>> findAll();
+    ResponseEntity<List<OnlyIdAndLinksPlanetResponseDTO>> findAll();
 
     @Operation(summary = "Find one planet by name",
             description = "Find by name planet on formats JSON e XML!",
