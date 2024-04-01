@@ -6,12 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 public class RequestToStarWarsOficialAPI {
-    private static final String baseUrl = "https://swapi.dev/api/";
+    private static final String BASE_URL = "https://swapi.dev/api/";
 
     public static int GetPlanetFilmAppearances(String namePlanet) throws PlanetNotFindException {
         RestTemplate restTemplate = new RestTemplate();
 
-        String url = baseUrl + "planets/?search=" + namePlanet;
+        String url = BASE_URL + "planets/?search=" + namePlanet;
         ResponseEntity<PlanetDataAPIOfficialResponse> planetData = restTemplate.getForEntity(url, PlanetDataAPIOfficialResponse.class);
 
         PlanetDataAPIOfficialResponse planetDataDTO = planetData.getBody();
