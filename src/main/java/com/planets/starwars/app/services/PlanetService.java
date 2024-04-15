@@ -12,6 +12,8 @@ import com.planets.starwars.app.utils.conversions.ConvertPlanetEntityToPlanetRes
 import com.planets.starwars.app.utils.conversions.ConvertPlanetRequestDTOToPlanetEntity;
 import com.planets.starwars.app.utils.requests.RequestToStarWarsOficialAPI;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -54,23 +56,17 @@ public class PlanetService {
         return planetResponseDTO;
     }
 
-    public List<OnlyIdAndLinksPlanetResponseDTO> findAll() {
-        List<Planet> planets = planetRepository.findAll();
+    public Page<OnlyIdAndLinksPlanetResponseDTO> findAll(Pageable pageable) {
+        Page<Planet> planets = planetRepository.findAll(pageable);
 
-        List<OnlyIdAndLinksPlanetResponseDTO> onlyIdAndLinksPlanetResponseDTOS = new ArrayList<>();
+        Page<OnlyIdAndLinksPlanetResponseDTO> planetResponseDTOS = planets.map(planet -> new OnlyIdAndLinksPlanetResponseDTO(planet.getId(), planet.getName()));
 
-        planets.forEach(planet -> {
-            OnlyIdAndLinksPlanetResponseDTO onlyIdAndLinksPlanetResponseDTO = new OnlyIdAndLinksPlanetResponseDTO(planet.getId(), planet.getName());
+        planetResponseDTOS.map(planet -> planet.add(
+                linkTo(methodOn(PlanetController.class).findById(planet.getId())).withSelfRel().withTitle("FindById"),
+                linkTo(methodOn(PlanetController.class).findByName(planet.getName())).withSelfRel().withTitle("FindByName")
+        ));
 
-            onlyIdAndLinksPlanetResponseDTO.add(
-                    linkTo(methodOn(PlanetController.class).findById(planet.getId())).withSelfRel().withTitle("FindById"),
-                    linkTo(methodOn(PlanetController.class).findByName(planet.getName())).withSelfRel().withTitle("FindByName")
-            );
-
-            onlyIdAndLinksPlanetResponseDTOS.add(onlyIdAndLinksPlanetResponseDTO);
-        });
-
-        return onlyIdAndLinksPlanetResponseDTOS;
+        return planetResponseDTOS;
     }
 
     public PlanetResponseDTO findByName(String name) {

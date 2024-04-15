@@ -6,6 +6,10 @@ import com.planets.starwars.app.dto.v1.PlanetRequestDTO;
 import com.planets.starwars.app.dto.v1.PlanetResponseDTO;
 import com.planets.starwars.app.services.PlanetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +43,15 @@ public class PlanetController implements IPlanetController {
 
     @GetMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<List<OnlyIdAndLinksPlanetResponseDTO>> findAll() {
-        List<OnlyIdAndLinksPlanetResponseDTO> planetResponseDTOList = planetService.findAll();
+    public ResponseEntity<Page<OnlyIdAndLinksPlanetResponseDTO>> findAll(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sort", defaultValue = "asc") String sort
+    ) {
+        Sort.Direction sortDirection = sort.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "name"));
+
+        Page<OnlyIdAndLinksPlanetResponseDTO> planetResponseDTOList = planetService.findAll(pageable);
 
         return ResponseEntity.status(200).body(planetResponseDTOList);
     }
