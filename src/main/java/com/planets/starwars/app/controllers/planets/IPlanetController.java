@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -42,7 +44,7 @@ public interface IPlanetController {
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
             }
     )
-    ResponseEntity<Page<OnlyIdAndLinksPlanetResponseDTO>> findAll(int page, int size, String sort);
+    ResponseEntity<PagedModel<EntityModel<OnlyIdAndLinksPlanetResponseDTO>>> findAll(int page, int size, String sort);
 
     @Operation(summary = "Find one planet by name",
             description = "Find by name planet on formats JSON e XML!",

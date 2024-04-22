@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +45,7 @@ public class PlanetController implements IPlanetController {
 
     @GetMapping(
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<Page<OnlyIdAndLinksPlanetResponseDTO>> findAll(
+    public ResponseEntity<PagedModel<EntityModel<OnlyIdAndLinksPlanetResponseDTO>>> findAll(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "sort", defaultValue = "asc") String sort
@@ -51,9 +53,7 @@ public class PlanetController implements IPlanetController {
         Sort.Direction sortDirection = sort.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "name"));
 
-        Page<OnlyIdAndLinksPlanetResponseDTO> planetResponseDTOList = planetService.findAll(pageable);
-
-        return ResponseEntity.status(200).body(planetResponseDTOList);
+        return ResponseEntity.status(200).body(planetService.findAll(pageable));
     }
 
     @GetMapping(value = "/search",

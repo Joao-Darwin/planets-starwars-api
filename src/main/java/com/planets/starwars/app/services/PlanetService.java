@@ -14,6 +14,10 @@ import com.planets.starwars.app.utils.requests.RequestToStarWarsOficialAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -29,10 +33,12 @@ public class PlanetService {
     private static final String PLANET_NOT_FIND_MESSAGE = "Planet don't find";
     private static final String PLANET_ALREADY_EXISTS_MESSAGE = "Planet already exists";
     private final PlanetRepository planetRepository;
+    private final PagedResourcesAssembler<OnlyIdAndLinksPlanetResponseDTO> assembler;
 
     @Autowired
-    public PlanetService(PlanetRepository planetRepository) {
+    public PlanetService(PlanetRepository planetRepository, PagedResourcesAssembler<OnlyIdAndLinksPlanetResponseDTO> assembler) {
         this.planetRepository = planetRepository;
+        this.assembler = assembler;
     }
 
     public PlanetResponseDTO create(PlanetRequestDTO planet) throws IOException, InterruptedException, PlanetNotFindException {
@@ -56,7 +62,7 @@ public class PlanetService {
         return planetResponseDTO;
     }
 
-    public Page<OnlyIdAndLinksPlanetResponseDTO> findAll(Pageable pageable) {
+    public PagedModel<EntityModel<OnlyIdAndLinksPlanetResponseDTO>> findAll(Pageable pageable) {
         Page<Planet> planets = planetRepository.findAll(pageable);
 
         Page<OnlyIdAndLinksPlanetResponseDTO> planetResponseDTOS = planets.map(planet -> new OnlyIdAndLinksPlanetResponseDTO(planet.getId(), planet.getName()));
@@ -66,7 +72,9 @@ public class PlanetService {
                 linkTo(methodOn(PlanetController.class).findByName(planet.getName())).withSelfRel().withTitle("FindByName")
         ));
 
-        return planetResponseDTOS;
+        Link linkPage = linkTo(methodOn(PlanetController.class).findAll(pageable.getPageNumber(), pageable.getPageSize(), "asc")).withSelfRel();
+
+        return assembler.toModel(planetResponseDTOS, linkPage);
     }
 
     public PlanetResponseDTO findByName(String name) {
