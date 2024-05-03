@@ -69,6 +69,24 @@ sudo mvn clean install
 ```bash
 mvn spring-boot:run
 ```
+<h2>Docker</h2>
+
+### Clonar repositório
+```bash
+git clone https://github.com/Joao-Darwin/planets-starwars-api Planets-StartWars-Api
+```
+### Entrar na pasta do projeto
+```bash
+cd Planets-StartWars-Api
+```
+### Instalar depedências do projeto
+```bash
+sudo mvn clean install -DskipTests
+```
+### Executa docker compose
+```bash
+docker compose up
+```
 
 <div>
   <h2 id="author">Autor</h2>
